@@ -2,6 +2,7 @@
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: GET");
 
 // include database and object files
 include_once '../config/database.php';
@@ -23,7 +24,7 @@ if($num>0){
 
 	// products array
 	$products_arr=array();
-	$products_arr["records"]=array();
+	$products_arr["items"]=array();
 
 	// retrieve our table contents
 	// fetch() is faster than fetchAll()
@@ -44,7 +45,7 @@ if($num>0){
 			"created" => $itemCreated
 		);
 
-		array_push($products_arr["records"], $product_item);
+		array_push($products_arr["items"], $product_item);
 	}
 
 	echo json_encode($products_arr);

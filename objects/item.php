@@ -41,5 +41,42 @@ class Item{
 }
 
 	
+	// create product
+	function create(){
+ 
+    // query to insert record
+    $query = "INSERT INTO
+                " . $this->table_name . "
+            SET
+                itemName=:name, itemImageUrl=:name, itemPrice=:price, itemDescription=:description, itemCatId=:category_id, itemCreated=:created";
+ 
+    // prepare query
+    $stmt = $this->conn->prepare($query);
+ 
+    // sanitize
+    $this->itemName=htmlspecialchars(strip_tags($this->itemName));
+	$this->itemImageUrl=htmlspecialchars(strip_tags($this->itemImageUrl));
+    $this->itemPrice=htmlspecialchars(strip_tags($this->itemPrice));
+    $this->itemDescription=htmlspecialchars(strip_tags($this->itemDescription));
+    $this->itemCatId=htmlspecialchars(strip_tags($this->itemCatId));
+    $this->itemCreated=htmlspecialchars(strip_tags($this->itemCreated));
+ 
+    // bind values
+    $stmt->bindParam(":name", $this->itemName);
+	$stmt->bindParam(":name", $this->itemImageUrl);
+    $stmt->bindParam(":price", $this->itemPrice);
+    $stmt->bindParam(":description", $this->itemDescription);
+    $stmt->bindParam(":category_id", $this->itemCatId);
+    $stmt->bindParam(":created", $this->itemCreated);
+ 
+    // execute query
+    if($stmt->execute()){
+        return true;
+    }
+ 
+    return false;
+     
+}
+	
 	
 }
