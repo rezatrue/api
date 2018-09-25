@@ -10,12 +10,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
  
 // instantiate product object
-include_once '../objects/product.php';
+include_once '../objects/item.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$product = new Product($db);
+$item = new Item($db);
  
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -23,13 +23,13 @@ $data = json_decode(file_get_contents("php://input"));
 // set product property values
 $item->itemName = $data->name;
 $item->itemImageUrl = $data->imageurl;
-$product->itemPrice = $data->price;
-$product->itemDescription = $data->description;
-$product->itemCatId = $data->category;
-$product->itemCreated = date('Y-m-d H:i:s');
+$item->itemPrice = $data->price;
+$item->itemDescription = $data->description;
+$item->itemCatId = $data->category;
+$item->itemCreated = date('Y-m-d H:i:s');
  
 // create the product
-if($product->create()){
+if($item->create()){
     echo '{';
         echo '"message": "Product was created."';
     echo '}';

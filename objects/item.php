@@ -14,8 +14,6 @@ class Item{
 	public $itemPrice;
 	public $itemCreated;
 	
-	public $created;
-
 	// constructor with $db as database connection
 	public function __construct($db){
 		$this->conn = $db;
@@ -48,7 +46,7 @@ class Item{
     $query = "INSERT INTO
                 " . $this->table_name . "
             SET
-                itemName=:name, itemImageUrl=:name, itemPrice=:price, itemDescription=:description, itemCatId=:category_id, itemCreated=:created";
+                itemName=:name, itemImageUrl=:imageurl, itemPrice=:price, itemDescription=:description, itemCatId=:category_id, itemCreated=:created";
  
     // prepare query
     $stmt = $this->conn->prepare($query);
@@ -63,7 +61,7 @@ class Item{
  
     // bind values
     $stmt->bindParam(":name", $this->itemName);
-	$stmt->bindParam(":name", $this->itemImageUrl);
+	$stmt->bindParam(":imageurl", $this->itemImageUrl);
     $stmt->bindParam(":price", $this->itemPrice);
     $stmt->bindParam(":description", $this->itemDescription);
     $stmt->bindParam(":category_id", $this->itemCatId);
