@@ -20,14 +20,17 @@ $item = new Item($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
  
+$uid = date('YmdHis');
 // set product property values
 $item->itemName = $data->name;
-$item->itemImageUrl = $data->imageurl;
+//$item->itemImageUrl = $data->imageurl;
+$item->itemImageUrl = 'images/'. $uid . '.jpg';
 $item->itemPrice = $data->price;
 $item->itemDescription = $data->description;
 $item->itemCatId = $data->category;
 $item->itemCreated = date('Y-m-d H:i:s');
- 
+//$item->itemTimeStamp = '2018-08-12 10:25:26';
+
 // create the product
 if($item->create()){
     echo '{';
@@ -39,6 +42,14 @@ if($item->create()){
 else{
     echo '{';
         echo '"message": "Unable to create product."';
-    echo '}';
+    echo '}';	
 }
+
+$imageName = '../images/'. $uid . '.jpg';
+$imageData = base64_decode($data->base64encodedImage);
+$source = imagecreatefromstring($imageData);
+$rotate = imagerotate($source, $angle, 0); // if want to rotate the image
+$imageSave = imagejpeg($rotate,$imageName,100);
+imagedestroy($source);
+
 ?>

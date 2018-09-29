@@ -13,6 +13,7 @@ class Item{
 	public $itemDescription;
 	public $itemPrice;
 	public $itemCreated;
+	//public $itemTimeStamp;
 	
 	// constructor with $db as database connection
 	public function __construct($db){
@@ -58,15 +59,17 @@ class Item{
     $this->itemDescription=htmlspecialchars(strip_tags($this->itemDescription));
     $this->itemCatId=htmlspecialchars(strip_tags($this->itemCatId));
     $this->itemCreated=htmlspecialchars(strip_tags($this->itemCreated));
- 
-    // bind values
+	//$this->itemTimeStamp=htmlspecialchars(strip_tags($this->itemTimeStamp));  // , itemTimeStamp=:timeStamp
+    
+	// bind values
     $stmt->bindParam(":name", $this->itemName);
 	$stmt->bindParam(":imageurl", $this->itemImageUrl);
     $stmt->bindParam(":price", $this->itemPrice);
     $stmt->bindParam(":description", $this->itemDescription);
     $stmt->bindParam(":category_id", $this->itemCatId);
     $stmt->bindParam(":created", $this->itemCreated);
- 
+	//$stmt->bindParam(":timeStamp", $this->itemTimeStamp);
+	
     // execute query
     if($stmt->execute()){
         return true;
