@@ -28,7 +28,7 @@ class Item{
 	$query = "SELECT
 				itemSerialNo, itemImageUrl, itemName, itemCatId, itemDescription, itemPrice, itemCreated, itemModified
 			FROM
-				" . $this->table_name . " ORDER BY itemCreated DESC";
+				" . $this->table_name . " ORDER BY itemCreated ASC";
 
 	// prepare query statement
 	$stmt = $this->conn->prepare($query);
