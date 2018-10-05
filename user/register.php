@@ -25,7 +25,7 @@ $data = json_decode(file_get_contents("php://input"));
 //$user->userEmail = NULL ; // $data->name;
 //$user->userPassword = $data->password;
 //$user->userPhone = $data->phone;
-//$user->userCreated = date('Y-m-d H:i:s');
+$user->userCreated = date('Y-m-d H:i:s');
 
 if($user->createuser()){
 	$status = "ok";

@@ -30,27 +30,16 @@ $num = $stmt->rowCount();
 $status = "failed";
 $name = "null";
 if($num > 0){
-	
-	$user_arr=array();
-	$user_arr["user"]=array();
+	// retrieve our table contents
+	// fetch() is faster than fetchAll()
+	// http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
 	
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 		 $name = $row['userName'];
 		 $status = "ok";
-		 
-		 $user_entity=array(
-			"userName"	=> $row['userName'],
-		);
-
-		array_push($user_arr["user"], $user_entity);
 	}
-	
-	echo json_encode($user_arr);
 }
 
-else{
-    echo json_encode(
-		array("message" => "No user found.")
-	);
+echo json_encode(array("response" => $status ,"name" => $name));
 
 ?>
