@@ -49,6 +49,7 @@ class User{
 	
 	$stmt->bindParam(1, $email);
 	$stmt->bindParam(2, $password);
+	
 	// execute query
 	$stmt->execute();
 

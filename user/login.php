@@ -17,8 +17,8 @@ $user = new User($db);
 
 // please apply post later
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-$user_email =  isset($_GET['email']) ? $_GET['email'] : null;
-$user_password = isset($_GET['password']) ? $_GET['password'] : null;
+$user_email =  isset($_GET['user_email']) ? $_GET['user_email'] : null;
+$user_password = isset($_GET['user_password']) ? $_GET['user_password'] : null;
 }
 
 // query user
@@ -28,29 +28,18 @@ $num = $stmt->rowCount();
 // check if more than 0 record found
 
 $status = "failed";
-$name = "null";
+$name = null;
 if($num > 0){
-	
-	$user_arr=array();
-	$user_arr["user"]=array();
+	// retrieve our table contents
+	// fetch() is faster than fetchAll()
+	// http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
 	
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 		 $name = $row['userName'];
-		 $status = "ok";
-		 
-		 $user_entity=array(
-			"userName"	=> $row['userName'],
-		);
-
-		array_push($user_arr["user"], $user_entity);
+		 if($name != null) $status = "ok";
 	}
-	
-	echo json_encode($user_arr);
 }
 
-else{
-    echo json_encode(
-		array("message" => "No user found.")
-	);
+echo json_encode(array("response" => $status ,"name" => $name));
 
 ?>

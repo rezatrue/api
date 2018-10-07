@@ -21,18 +21,20 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
  
 // set user property values
-//$user->userName = $data->email;
-//$user->userEmail = NULL ; // $data->name;
-//$user->userPassword = $data->password;
-//$user->userPhone = $data->phone;
+$user->userName = $data->name;
+$user->userEmail = $data->email;
+$user->userPassword = $data->password;
+$user->userPhone = $data->phone;
 $user->userCreated = date('Y-m-d H:i:s');
 
 if($user->createuser()){
 	$status = "ok";
+	$name = $user->userName;
 }else {
-	$status = "error";
+	$status = "failed";
+	$name = "null";
 }
 
-echo json_encode(array("response"=>$status));
+echo json_encode(array("response" => $status ,"name" => $name));
 
 ?>
