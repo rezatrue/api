@@ -28,7 +28,7 @@ $num = $stmt->rowCount();
 // check if more than 0 record found
 
 $status = "failed";
-$name = null;
+$name = "";
 if($num > 0){
 	// retrieve our table contents
 	// fetch() is faster than fetchAll()
@@ -36,7 +36,11 @@ if($num > 0){
 	
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 		 $name = $row['userName'];
-		 if($name != null) $status = "ok";
+		 if($name != null) {
+			$status = "ok";
+		 }else {
+			$name = ""; 
+		 }
 	}
 }
 
