@@ -42,7 +42,7 @@ class Restaurant{
 
 	
 	// create product
-	function create(){
+	function createRestaurant(){
  
     // query to insert record
     $query = "INSERT INTO

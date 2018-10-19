@@ -11,7 +11,8 @@ include_once '../config/database.php';
  
 // instantiate product object
 include_once '../objects/restaurant.php';
- 
+
+
 $database = new Database();
 $db = $database->getConnection();
  
@@ -21,18 +22,6 @@ $restaurant = new Restaurant($db);
 $data = json_decode(file_get_contents("php://input"));
 
 $pid = $data->phone;
-
-
-$imageName = '../images/restaurant/'. $pid . '.jpg';
-$imageData = base64_decode($data->base64encodedImage);
-$source = imagecreatefromstring($imageData);
-$rotate = imagerotate($source, $angle, 0); // if want to rotate the image
-$imageSave = imagejpeg($rotate,$imageName,100);
-imagedestroy($source);
-
-
-
-
 // set product property values
 $restaurant->restaurantName = $data->name;
 $restaurant->restaurantImageUrl = 'images/restaurant/'. $pid . '.jpg';
@@ -43,12 +32,23 @@ $restaurant->restaurantLongitude = $data->longitude;
 $restaurant->userSerialNo = $data->userid;
 $restaurant->restaurantCreated = date('Y-m-d H:i:s');
 
-if($restaurant->create()){
+
+
+
+// inserting new restaurant data  
+if($restaurant->createRestaurant()){
+	// copy image 
+	$imageName = '../images/restaurant/'. $pid . '.jpg';
+	$imageData = base64_decode($data->base64encodedImage);
+	file_put_contents($imageName, $imageData);
+	// response status
 	$status = "ok";
 	$name = $restaurant->restaurantName;
+
 }else {
 	$status = "failed";
 	$name = "null";
+
 }
 
 
