@@ -5,7 +5,7 @@ class Restaurant{
 	private $conn;
 	private $table_name = "tbl_restaurants";
 
-	// object properties
+	// restaurant properties
 	public $restaurantSerialNo;
 	public $restaurantImageUrl;
 	public $restaurantName;
@@ -82,6 +82,8 @@ class Restaurant{
     return false;
      
 }
+	
+	
 	
 	
 }

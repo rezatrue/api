@@ -33,8 +33,6 @@ $restaurant->userSerialNo = $data->userid;
 $restaurant->restaurantCreated = date('Y-m-d H:i:s');
 
 
-
-
 // inserting new restaurant data  
 if($restaurant->createRestaurant()){
 	// copy image 
