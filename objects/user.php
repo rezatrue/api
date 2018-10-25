@@ -37,11 +37,30 @@ class User{
 	return $stmt;
 }
 
+	// search user id
+	function searchUserId($userPhone , $userCreated ){
+
+	// select all query
+	$query = "SELECT userSerialNo FROM
+				" . $this->table_name . " WHERE userPhone = ? AND userCreated = ? ";
+
+	// prepare query statement
+	$stmt = $this->conn->prepare($query);
+
+	$stmt->bindParam(1, $userPhone);
+	$stmt->bindParam(2, $userCreated);
+	
+	// execute query
+	$stmt->execute();
+
+	return $stmt;
+}
+
 	// login user
 	function login($email, $password){
 
 	// select all query
-	$query = "SELECT userName FROM 
+	$query = "SELECT userName , userSerialNo FROM 
 				" . $this->table_name . " WHERE userEmail = ? AND userPassword = ? ORDER BY userSerialNo ASC";
 
 	// prepare query statement

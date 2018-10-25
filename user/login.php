@@ -29,6 +29,7 @@ $num = $stmt->rowCount();
 
 $status = "failed";
 $name = "";
+$id = "";
 if($num > 0){
 	// retrieve our table contents
 	// fetch() is faster than fetchAll()
@@ -36,6 +37,7 @@ if($num > 0){
 	
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 		 $name = $row['userName'];
+		 $id = $row['userSerialNo'];
 		 if($name != null) {
 			$status = "ok";
 		 }else {
@@ -44,6 +46,6 @@ if($num > 0){
 	}
 }
 
-echo json_encode(array("response" => $status ,"name" => $name));
+echo json_encode(array("response" => $status ,"name" => $name,"id" => $id));
 
 ?>

@@ -49,9 +49,7 @@ if($restaurant->createRestaurant()){
 
 }
 
-
 echo json_encode(array("response" => $status ,"name" => $name));
-
 
 
 ?>
