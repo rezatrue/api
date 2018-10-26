@@ -17,6 +17,7 @@ $db = $database->getConnection();
  
 $user = new User($db);
  
+ 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
  
@@ -27,6 +28,8 @@ $user->userPassword = $data->password;
 $user->userPhone = $data->phone;
 $user->userCreated = date('Y-m-d H:i:s');
 
+// don't need to return user id now
+$id = 0;
 if($user->createuser()){
 	$status = "ok";
 	$name = $user->userName;
@@ -35,6 +38,6 @@ if($user->createuser()){
 	$name = "null";
 }
 
-echo json_encode(array("response" => $status ,"name" => $name));
+echo json_encode(array("response" => $status ,"name" => $name,"userid" => $id));
 
 ?>

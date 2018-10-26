@@ -40,6 +40,30 @@ class Restaurant{
 	return $stmt;
 	}
 
+
+// read specific owner restaurants 
+	function readWithId($user_id){
+
+	$query = "SELECT
+				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
+			FROM
+				" . $this->table_name . " WHERE userSerialNo = ?";
+
+	// prepare query statement
+	$stmt = $this->conn->prepare($query);
+
+	$stmt->bindParam(1, $user_id);
+	
+	// execute query
+	$stmt->execute();
+
+	return $stmt;
+	
+	}
+
+
+
+
 	
 	// create product
 	function createRestaurant(){

@@ -46,6 +46,6 @@ if($num > 0){
 	}
 }
 
-echo json_encode(array("response" => $status ,"name" => $name,"id" => $id));
+echo json_encode(array("response" => $status ,"name" => $name,"userid" => $id));
 
 ?>

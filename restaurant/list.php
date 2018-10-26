@@ -12,11 +12,17 @@ include_once '../objects/restaurant.php';
 $database = new Database();
 $db = $database->getConnection();
 
-
 $restaurant = new Restaurant($db);
 
+if($_SERVER['REQUEST_METHOD'] == 'GET') {
+$user_id =  isset($_GET['user_id']) ? $_GET['user_id'] : null;
+}
+
 // query products
-$stmt = $restaurant->read();
+if($user_id != null)
+	$stmt = $restaurant->readWithId($user_id);
+else 
+	$stmt = $restaurant->read();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
