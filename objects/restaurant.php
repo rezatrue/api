@@ -9,6 +9,7 @@ class Restaurant{
 	public $restaurantSerialNo;
 	public $restaurantImageUrl;
 	public $restaurantName;
+	public $restaurantType;
 	public $restaurantAddress;
 	public $restaurantPhone;
 	public $restaurantLatitude;
@@ -27,7 +28,7 @@ class Restaurant{
 	// select all query
 	
 	$query = "SELECT
-				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
+				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantType, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
 			FROM
 				" . $this->table_name . " ORDER BY restaurantCreated ASC";
 
@@ -39,13 +40,27 @@ class Restaurant{
 
 	return $stmt;
 	}
+	
+	function restaurantName($restaurantSerialNo){
+
+	// select res name
+	$query = "SELECT restaurantName FROM " . $this->table_name . " WHERE restaurantSerialNo = ?";
+	// prepare query statement
+	$stmt = $this->conn->prepare($query);
+
+	$stmt->bindParam(1, $restaurantSerialNo);
+	// execute query
+	$stmt->execute();
+
+	return $stmt;
+	}
 
 
 // read specific owner restaurants 
 	function readWithId($user_id){
 
 	$query = "SELECT
-				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
+				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantType, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
 			FROM
 				" . $this->table_name . " WHERE userSerialNo = ?";
 
@@ -61,7 +76,25 @@ class Restaurant{
 	
 	}
 
+// read specific owner restaurants 
+	function readWithType($res_type){
 
+	$query = "SELECT
+				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantType, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
+			FROM
+				" . $this->table_name . " WHERE restaurantType = ?";
+
+	// prepare query statement
+	$stmt = $this->conn->prepare($query);
+
+	$stmt->bindParam(1, $res_type);
+	
+	// execute query
+	$stmt->execute();
+
+	return $stmt;
+	
+	}
 
 
 	
@@ -72,7 +105,7 @@ class Restaurant{
     $query = "INSERT INTO
                 " . $this->table_name . "
             SET
-                restaurantName=:name, restaurantImageUrl=:imageurl, restaurantAddress=:address, restaurantPhone=:phone, restaurantLatitude=:latitude, restaurantLongitude=:longitude, userSerialNo=:userSerial, restaurantCreated=:created";
+                restaurantName=:name, restaurantImageUrl=:imageurl, restaurantType=:type, restaurantAddress=:address, restaurantPhone=:phone, restaurantLatitude=:latitude, restaurantLongitude=:longitude, userSerialNo=:userSerial, restaurantCreated=:created";
  
     // prepare query
     $stmt = $this->conn->prepare($query);
@@ -80,6 +113,7 @@ class Restaurant{
     // sanitize
     $this->restaurantName=htmlspecialchars(strip_tags($this->restaurantName));
 	$this->restaurantImageUrl=htmlspecialchars(strip_tags($this->restaurantImageUrl));
+	$this->restaurantType=htmlspecialchars(strip_tags($this->restaurantType));
     $this->restaurantAddress=htmlspecialchars(strip_tags($this->restaurantAddress));
 	$this->restaurantPhone=htmlspecialchars(strip_tags($this->restaurantPhone));
     $this->restaurantLatitude=htmlspecialchars(strip_tags($this->restaurantLatitude));
@@ -90,6 +124,7 @@ class Restaurant{
 	// bind values
     $stmt->bindParam(":name", $this->restaurantName);
 	$stmt->bindParam(":imageurl", $this->restaurantImageUrl);
+	$stmt->bindParam(":type", $this->restaurantType);
     $stmt->bindParam(":address", $this->restaurantAddress);
 	$stmt->bindParam(":phone", $this->restaurantPhone);
     $stmt->bindParam(":latitude", $this->restaurantLatitude);

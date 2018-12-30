@@ -20,36 +20,36 @@ $item = new Item($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
  
-$uid = date('YmdHis');
+$pid = date('YmdHis');
 // set product property values
 $item->itemName = $data->name;
 //$item->itemImageUrl = $data->imageurl;
-$item->itemImageUrl = 'images/'. $uid . '.jpg';
+$item->itemImageUrl = 'images/item/'. $pid . '.jpg';
 $item->itemPrice = $data->price;
 $item->itemDescription = $data->description;
 $item->itemCatId = $data->category;
 $item->itemCreated = date('Y-m-d H:i:s');
-//$item->itemTimeStamp = '2018-08-12 10:25:26';
+$item->restaurantSerialNo = $data->restaurantid;
+$item->itemModified = $item->itemCreated;
 
-// create the product
+
 if($item->create()){
-    echo '{';
-        echo '"message": "Product was created."';
-    echo '}';
-}
- 
-// if unable to create the product, tell the user
-else{
-    echo '{';
-        echo '"message": "Unable to create product."';
-    echo '}';	
+	// copy image
+	
+	$imageName = '../images/item/'. $pid . '.jpg';
+	$imageData = base64_decode($data->base64encodedImage);
+	file_put_contents($imageName, $imageData);
+	
+	// response status
+	$status = "ok";
+	$name = $item->itemName;
+
+}else {
+	$status = "failed";
+	$name = "null";
+
 }
 
-$imageName = '../images/'. $uid . '.jpg';
-$imageData = base64_decode($data->base64encodedImage);
-$source = imagecreatefromstring($imageData);
-$rotate = imagerotate($source, $angle, 0); // if want to rotate the image
-$imageSave = imagejpeg($rotate,$imageName,100);
-imagedestroy($source);
+echo json_encode(array("response" => $status ,"name" => $name));
 
 ?>

@@ -14,7 +14,8 @@ class Item{
 	public $itemPrice;
 	public $restaurantSerialNo;
 	public $itemCreated;
-	//public $itemTimeStamp;
+	public $itemModified;
+	
 	
 	// constructor with $db as database connection
 	public function __construct($db){
@@ -40,7 +41,6 @@ class Item{
 	return $stmt;
 }
 
-
 // read specific restaurant 
 	function readWithId($restaurant_id){
 	
@@ -61,18 +61,15 @@ class Item{
 	
 	}
 
-
-
-	
 	// create product
 	function create(){
- 
+//     if($this->itemName == "" || $this->itemPrice == 0 || $this->restaurantSerialNo == 0 || $this->itemCatId == 0) return false;
     // query to insert record
     $query = "INSERT INTO
                 " . $this->table_name . "
             SET
-                itemName=:name, itemImageUrl=:imageurl, itemPrice=:price, restaurantSerialNo=:restaurant_id, itemDescription=:description, itemCatId=:category_id, itemCreated=:created";
- 
+                itemName=:name, itemImageUrl=:imageurl, itemPrice=:price, restaurantSerialNo=:restaurant_id, itemDescription=:description, itemCatId=:category_id, itemCreated=:created, itemModified=:modified";
+				
     // prepare query
     $stmt = $this->conn->prepare($query);
  
@@ -84,7 +81,7 @@ class Item{
     $this->itemDescription=htmlspecialchars(strip_tags($this->itemDescription));
     $this->itemCatId=htmlspecialchars(strip_tags($this->itemCatId));
     $this->itemCreated=htmlspecialchars(strip_tags($this->itemCreated));
-	//$this->itemTimeStamp=htmlspecialchars(strip_tags($this->itemTimeStamp));  // , itemTimeStamp=:timeStamp
+	$this->itemModified=htmlspecialchars(strip_tags($this->itemModified));  
     
 	// bind values
     $stmt->bindParam(":name", $this->itemName);
@@ -94,7 +91,7 @@ class Item{
     $stmt->bindParam(":description", $this->itemDescription);
     $stmt->bindParam(":category_id", $this->itemCatId);
     $stmt->bindParam(":created", $this->itemCreated);
-	//$stmt->bindParam(":timeStamp", $this->itemTimeStamp);
+	$stmt->bindParam(":modified", $this->itemModified);
 	
     // execute query
     if($stmt->execute()){
@@ -107,3 +104,5 @@ class Item{
 	
 	
 }
+
+	

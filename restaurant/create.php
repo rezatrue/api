@@ -26,6 +26,7 @@ $pid = $data->phone;
 $restaurant->restaurantName = $data->name;
 $restaurant->restaurantImageUrl = 'images/restaurant/'. $pid . '.jpg';
 $restaurant->restaurantAddress = $data->address;
+$restaurant->restaurantType = $data->type;
 $restaurant->restaurantPhone = $pid;
 $restaurant->restaurantLatitude = $data->latitude;
 $restaurant->restaurantLongitude = $data->longitude;

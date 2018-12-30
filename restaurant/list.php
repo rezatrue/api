@@ -16,14 +16,22 @@ $restaurant = new Restaurant($db);
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
 $user_id =  isset($_GET['user_id']) ? $_GET['user_id'] : null;
+$res_type =  isset($_GET['res_type']) ? $_GET['res_type'] : null;
 }
 
 // query products
 if($user_id != null)
 	$stmt = $restaurant->readWithId($user_id);
-else 
+if($res_type != null)
+	if($res_type != "ALL")
+		$stmt = $restaurant->readWithType($res_type);
+	else
+		$stmt = $restaurant->read();
+if($user_id == null && $res_type == null)
 	$stmt = $restaurant->read();
+
 $num = $stmt->rowCount();
+
 
 // check if more than 0 record found
 if($num>0){
@@ -46,6 +54,7 @@ if($num>0){
 			"serialno" => $restaurantSerialNo,
 			"imageurl" => $restaurantImageUrl,
 			"name" => $restaurantName,
+			"type" => $restaurantType,
 			"address" => $restaurantAddress,
 			"phone" => $restaurantPhone,
 			"latitude" => $restaurantLatitude,

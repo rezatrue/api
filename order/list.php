@@ -4,35 +4,36 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET");
 
-// include database and object files
+// include database and restaurant files
 include_once '../config/database.php';
-include_once '../objects/item.php';
+include_once '../objects/order.php';
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
 
-// initialize object
-$item = new Item($db);
-
+$order = new Order($db);
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
 $restaurant_id =  isset($_GET['restaurant_id']) ? $_GET['restaurant_id'] : null;
+$user_id =  isset($_GET['user_id']) ? $_GET['user_id'] : null;
 }
 
 // query products
-if($restaurant_id != null || $restaurant_id != 0 )
-	$stmt = $item->readWithId($restaurant_id);
-else 
-	$stmt = $item->read();
+if($restaurant_id != null)
+	$stmt = $order->readWithRestaurantId($restaurant_id);
+if($user_id != null)
+	$stmt = $order->readWithUserId($user_id);
+//else 
+//	$stmt = $order->read();
+
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
 if($num>0){
 
 	// products array
-	$products_arr=array();
-	$products_arr["items"]=array();
+	$orders_arr=array();
 
 	// retrieve our table contents
 	// fetch() is faster than fetchAll()
@@ -42,24 +43,25 @@ if($num>0){
 		// this will make $row['name'] to
 		// just $name only
 		extract($row);
+
 		
-		
-		$product_item=array(
-			"serialno" => $itemSerialNo,
-			"itemImageUrl" => $itemImageUrl,
-			"name" => $itemName,
-			"category" => $itemCatId,
-			"description" => html_entity_decode($itemDescription),
-			"price" => $itemPrice,
+		$order_info=array(
+			"orderid" => $orderID,
 			"restaurantid" => $restaurantSerialNo,
-			"created" => $itemCreated,
-			"modified" => $itemModified
+			"userid" => $userSerialNo,
+			"date" => $orderDate,
+			"status" => $orderStatus,
+			"phone" => $deliverPhone,
+			"address" => $deliverAddress,
+			"latitude" => $deliverLat,
+			"longitude" => $deliverLng
+
 		);
 
-		array_push($products_arr["items"], $product_item);
+		array_push($orders_arr, $order_info);
 	}
 
-	echo json_encode($products_arr);
+	echo json_encode($orders_arr);
 }
 
 else{

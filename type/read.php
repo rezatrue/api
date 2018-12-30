@@ -6,33 +6,32 @@ header("Access-Control-Allow-Methods: GET");
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/item.php';
+include_once '../objects/type.php';
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
 
 // initialize object
-$item = new Item($db);
+$type = new Type($db);
 
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-$restaurant_id =  isset($_GET['restaurant_id']) ? $_GET['restaurant_id'] : null;
+$type_id =  isset($_GET['type_id']) ? $_GET['type_id'] : null;
 }
 
 // query products
-if($restaurant_id != null || $restaurant_id != 0 )
-	$stmt = $item->readWithId($restaurant_id);
+if($type_id != null || $type_id != 0 )
+	$stmt = $type->readTypeId($type_id);
 else 
-	$stmt = $item->read();
+	$stmt = $type->read();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
 if($num>0){
 
 	// products array
-	$products_arr=array();
-	$products_arr["items"]=array();
+	$types_arr=array();
 
 	// retrieve our table contents
 	// fetch() is faster than fetchAll()
@@ -44,22 +43,15 @@ if($num>0){
 		extract($row);
 		
 		
-		$product_item=array(
-			"serialno" => $itemSerialNo,
-			"itemImageUrl" => $itemImageUrl,
-			"name" => $itemName,
-			"category" => $itemCatId,
-			"description" => html_entity_decode($itemDescription),
-			"price" => $itemPrice,
-			"restaurantid" => $restaurantSerialNo,
-			"created" => $itemCreated,
-			"modified" => $itemModified
+		$res_type=array(
+			"typeid" => $typeID,
+			"resType" => $resType,
 		);
 
-		array_push($products_arr["items"], $product_item);
+		array_push($types_arr, $res_type);
 	}
 
-	echo json_encode($products_arr);
+	echo json_encode($types_arr);
 }
 
 else{

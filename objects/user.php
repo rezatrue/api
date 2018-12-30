@@ -37,6 +37,26 @@ class User{
 	return $stmt;
 }
 
+
+	// user search with id
+	function searchUser($userSerialNo){
+
+	// select all query
+	$query = "SELECT userSerialNo, userName, userEmail, userPhone, userCreated FROM
+				" . $this->table_name . " WHERE userSerialNo = ? ";
+
+	// prepare query statement
+	$stmt = $this->conn->prepare($query);
+
+	$stmt->bindParam(1, $userSerialNo);
+	
+	// execute query
+	$stmt->execute();
+
+	return $stmt;
+}
+
+
 	// search user id
 	function searchUserId($userPhone , $userCreated ){
 
