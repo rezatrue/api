@@ -22,25 +22,20 @@ class Restaurant{
 		$this->conn = $db;
 	}
 	
-	// read all restaurants
+/*	// read all restaurants
 	function read(){
-
 	// select all query
-	
 	$query = "SELECT
 				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantType, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
 			FROM
 				" . $this->table_name . " ORDER BY restaurantCreated ASC";
-
 	// prepare query statement
 	$stmt = $this->conn->prepare($query);
-
 	// execute query
 	$stmt->execute();
-
 	return $stmt;
 	}
-	
+*/	
 	function restaurantName($restaurantSerialNo){
 
 	// select res name
@@ -77,18 +72,18 @@ class Restaurant{
 	}
 
 // read specific owner restaurants 
-	function readWithType($res_type){
+	function readWithType($res_type, $user_id){
 
 	$query = "SELECT
 				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantType, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
 			FROM
-				" . $this->table_name . " WHERE restaurantType = ?";
+				" . $this->table_name . " WHERE restaurantType = ? AND NOT userSerialNo = ?"; 
 
 	// prepare query statement
 	$stmt = $this->conn->prepare($query);
 
 	$stmt->bindParam(1, $res_type);
-	
+	$stmt->bindParam(2, $user_id);
 	// execute query
 	$stmt->execute();
 
@@ -96,7 +91,27 @@ class Restaurant{
 	
 	}
 
+// read specific owner restaurants 
+	function readNotWithId($user_id){
 
+	$query = "SELECT
+				restaurantSerialNo, restaurantImageUrl, restaurantName, restaurantType, restaurantAddress, restaurantPhone, restaurantLatitude, restaurantLongitude, userSerialNo, restaurantCreated
+			FROM
+				" . $this->table_name . " WHERE userSerialNo != ?";
+
+	// prepare query statement
+	$stmt = $this->conn->prepare($query);
+
+	$stmt->bindParam(1, $user_id);
+	
+	// execute query
+	$stmt->execute();
+
+	return $stmt;
+	
+	}
+	
+	
 	
 	// create product
 	function createRestaurant(){

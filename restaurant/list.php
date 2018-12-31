@@ -17,20 +17,23 @@ $restaurant = new Restaurant($db);
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
 $user_id =  isset($_GET['user_id']) ? $_GET['user_id'] : null;
 $res_type =  isset($_GET['res_type']) ? $_GET['res_type'] : null;
+$not_user_id =  isset($_GET['not_user_id']) ? $_GET['not_user_id'] : null;
 }
 
-// query products
-if($user_id != null)
-	$stmt = $restaurant->readWithId($user_id);
-if($res_type != null)
-	if($res_type != "ALL")
-		$stmt = $restaurant->readWithType($res_type);
-	else
-		$stmt = $restaurant->read();
-if($user_id == null && $res_type == null)
-	$stmt = $restaurant->read();
+$num = 0;
 
+// query products
+if($user_id != null){
+	$stmt = $restaurant->readWithId($user_id);
+	$num = $stmt->rowCount();
+}
+if($res_type != null && $not_user_id != null){
+	if($res_type != "ALL")
+		$stmt = $restaurant->readWithType($res_type, $not_user_id);
+	else
+		$stmt = $restaurant->readNotWithId($not_user_id);
 $num = $stmt->rowCount();
+}
 
 
 // check if more than 0 record found
