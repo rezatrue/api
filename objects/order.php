@@ -67,7 +67,7 @@ class Order{
 	$query = "SELECT
 					orderID, restaurantSerialNo, userSerialNo, orderDate, orderStatus, deliverPhone, deliverAddress, deliverLat, deliverLng
 				FROM
-					" . $this->table_name . " WHERE restaurantSerialNo = ? AND orderStatus NOT -1 AND 4";
+					" . $this->table_name . " WHERE restaurantSerialNo = ? AND orderStatus NOT IN (-1, 4)";
 	
 	// prepare query statement
 	$stmt = $this->conn->prepare($query);
